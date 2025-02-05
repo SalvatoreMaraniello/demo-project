@@ -1,0 +1,7 @@
+pgcli>=4.0.1,<=5.0.0
+pyarrow
+fastparquet
+SQLalchemy
+psycopg2-binary>=2.9.2,<3.0
+pandas>=2.2.0,<=3.0.0
+ipython

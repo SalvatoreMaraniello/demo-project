@@ -1,0 +1,31 @@
+# Copyright VMware, Inc.
+# SPDX-License-Identifier: APACHE-2.0
+
+version: '2'
+
+services:
+
+  pgserver:
+    image: docker.io/bitnami/postgresql:16
+    ports:
+      - '4321:1234'
+    volumes:
+      - './persistent-data:/bitnami/postgresql'
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRESQL_PASSWORD=password123'
+      - 'POSTGRES_DB=dummy_db'
+      - 'POSTGRESQL_PORT_NUMBER=1234'
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    ports:
+      - '8080:80'
+    environment:
+      - 'PGADMIN_DEFAULT_EMAIL=admin@admin.com'
+      - 'PGADMIN_DEFAULT_PASSWORD=adminpwd'
+
+volumes:
+  persistent-data:
+    driver: local

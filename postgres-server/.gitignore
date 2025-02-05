@@ -1,0 +1,7 @@
+venv
+!pipeline-in/.vscode/launch.json
+
+# ignore all in "persistent-data" folder - except .gitkeep.
+persistent-data/*
+!persistent-data/.gitkeep
+
