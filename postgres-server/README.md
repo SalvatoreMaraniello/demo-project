@@ -1,21 +1,31 @@
 # Postgres
 
+## Quickstart
+
 The fastest way to spin the Postgres database is to use:
 
-```
+```sh
 docker compose up -d
+# PS: To stop the service, use
+#   docker compose down
 ```
 
-and use `docker compose down` to stop it.
+which will spin up two containers for:
 
-Note that this will spin up:
+- a Postgres server
+- a pgAdmin service available at `localhost:8080`. The postgres server is found udner name `pgserver`.
 
-- Postgres. See [_Client_](#Client) section for details on how to access from python.
-- pgAdmin. Available at `localhost:8080`. PG database found under `pgserver` name. See below for more details.
+> Note: for (un)education purposes, all secrets are exposed in `docker-compose.yml`.
 
-> More details can be found in `docker-compose.yml`. Note that for for (un)educational purposes, and simplicity, secrets are exposed.
+To load data into the database, you can:
 
-The next subsections explain in details each component - and how to spin them individually.
+- Look at [`load_data.py`](load_data.py), which uses a SQLalchemy.
+- Use `psql`:
+  ```sh
+  psql -h your_host -U your_user -d your_db -c "\copy your_table FROM 'your_file.csv' CSV HEADER"
+  ```
+
+See [_Client_](#Client) section for details on how to access from python.
 
 ## Spin from a Docker container
 
@@ -48,7 +58,7 @@ A working pipeline to load data into the database is found in `pipeline-in` fold
   python pipeline.py -y 2023 -u postgres -p password123 --host localhost --port 4321 -d dummy_db -s dummy_db -t yellow_trip
   ```
 
-- `load_data_example.py` is a dev script where you test basic `sqlalchemy` functionalities.
+- `load_data.py` is a dev script where you test basic `sqlalchemy` functionalities.
 
 See [db-connector](https://github.com/SalvatoreMaraniello/db-connector) for a production-ready python connector.
 
@@ -131,9 +141,9 @@ pgcli -h localhost -p 4321 -u postgres -d dummy_db
 
 where the port and user are as defined in the environmental variables above! Note that at this stage there is only one user, the postgres (super)user, which is called `postgres` as per `POSTGRES_USER` variable. You'll need to use the password associated to `POSTGRESQL_PASSWORD`. As you create new users, you'll be able to login with different credentials.
 
-You can list the ocntent of the database as `dt` - and should come empty. With this client you can run `SQL` commands, create function as per `PL/pgSQL` etc - see Postgres documentation.
+You can list the content of the database as `dt` - and should come empty. With this client you can run `SQL` commands, create function as per `PL/pgSQL` etc - see Postgres documentation.
 
-#### data Inport
+#### data Import
 
 See [`COPY`](https://www.postgresql.org/docs/current/sql-copy.html) command documentation - or jump to `pandas` client section.
 
